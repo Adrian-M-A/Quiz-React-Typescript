@@ -1,6 +1,7 @@
 import React from 'react';
 // Types
 import { AnswerObject } from '../App'
+import './QuestionCard.css';
 
 type Props = {
     question:string,
@@ -26,7 +27,7 @@ const QuestionCard: React.FC<Props> = ({
         </p>
         {/* It's difficult to know what is going to be injected there but it's safe en arrow function */}
         <p dangerouslySetInnerHTML={{__html: question}}></p>
-        <div>
+        <div id="answers">
             {answers.map(answer => (
                 <div key={answer}>
                     <button disabled={userAnswer ? true : false} value={answer} onClick={callback}>
