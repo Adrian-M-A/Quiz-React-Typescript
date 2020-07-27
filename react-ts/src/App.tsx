@@ -6,7 +6,7 @@ import QuestionCard from './components/QuestionCard';
 // Types
 import {QuestionState, Difficulty } from './API'
 
-type AnswerObject = {
+export type AnswerObject = {
   question: string;
   answer: string;
   correct: boolean;
@@ -42,37 +42,62 @@ const App = () => {
   }
 
   const checkAnswer = (event: React.MouseEvent<HTMLButtonElement>) =>{
-
+    if(!gameOver){
+      // Take the answer compare with the correct SVGZoomAndPan, if it's add 1 to the score
+      const answer = event.currentTarget.value;
+      const correct = questions[number].correct_answer == answer;
+      if (correct) setScore(prev => prev + 1)
+      const answerObject = {
+        question: questions[number].question,
+        answer: answer,
+        correct: correct,
+        correctAnswer: questions[number].correct_answer,
+      };
+      setUserAnswers(prev => [...prev, answerObject]);
+    }
   }
 
   const nextQuestion = () =>{
+    const nextQuestion = number +1;
+    if (nextQuestion === TOTAL_QUESTIONS){
+      setGameOver(true);
+    } else{
+      setNumber(nextQuestion)
+    }
 
   }
 
   return (
     <div className="App">
       <h1>REACT-TS Quiz</h1>
-      {gameOver || setUserAnswers.length === TOTAL_QUESTIONS
-        ?
+      {gameOver || setUserAnswers.length === TOTAL_QUESTIONS ?
         <button className="start" onClick={startTrivia}>
         Start
         </button>
         :
         null
       }
-      {!gameOver ? <p className="score">Score:</p> : null}
+      {!gameOver ? <p className="score">Score: {score}</p> : null}
       {loading ? <p> Loading Questions...</p> : null}
-      {/* <QuestionCard
+      {!loading && !gameOver && (
+        <QuestionCard
         questionNr={number +1}
         totalQuestions={TOTAL_QUESTIONS}
         question={questions[number].question}
         answers={questions[number].answers}
         userAnswer={userAnswer ? userAnswer[number] : undefined}
         callback={checkAnswer}
-      /> */}
-      <button className="next" onClick={nextQuestion}>
+        /> 
+      )} 
+      {!gameOver && 
+      !loading && 
+      userAnswer.length === number +1 &&
+      number !== TOTAL_QUESTIONS -1 ? (
+        <button className="next" onClick={nextQuestion}>
         Next Question
-      </button>
+        </button>
+      ): null}
+      
     </div>
   );
 }
