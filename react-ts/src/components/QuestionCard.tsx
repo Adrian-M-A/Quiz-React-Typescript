@@ -12,7 +12,7 @@ type Props = {
 // Functional component
 const QuestionCard: React.FC<Props> = ({
     question, 
-    answer, 
+    answers, 
     callback, 
     userAnswer, 
     questionNr, 
@@ -25,7 +25,7 @@ const QuestionCard: React.FC<Props> = ({
         {/* It's difficult to know what is going to be injected there but it's safe en arrow function */}
         <p dangerouslySetInnerHTML={{__html: question}}></p>
         <div>
-            {answer.map(answer => (
+            {answers.map(answer => (
                 <div>
                     <button disabled={userAnswer} onClick={callback}>
                         <span dangerouslySetInnerHTML={{__html: answer}} />
